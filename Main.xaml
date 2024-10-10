@@ -353,10 +353,11 @@
               <av:Size x:Key="ShapeSize">110,70</av:Size>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence sap2010:Annotation.AnnotationText="Esta sequencia ordena os pokemons e apresenta em uma MensageBox" DisplayName="Ordem Exibe Pokemons" sap:VirtualizedContainerService.HintSize="110,70" sap2010:WorkflowViewState.IdRef="Sequence_47">
+          <Sequence sap2010:Annotation.AnnotationText="Esta sequencia ordena os pokemons e apresenta em uma MensageBox" DisplayName="Ordem Exibe Pokemons" sap:VirtualizedContainerService.HintSize="513,864" sap2010:WorkflowViewState.IdRef="Sequence_47">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="stNameSequence" />
               <Variable x:TypeArguments="x:String" Name="stPokemonsOrdenados" />
+              <Variable x:TypeArguments="sd:DataView" Name="dtView" />
               <Variable x:TypeArguments="sd:DataTable" Name="dtPokemonsOrdenados" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
@@ -365,7 +366,7 @@
                 <x:Boolean x:Key="IsAnnotationDocked">False</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Assign sap:VirtualizedContainerService.HintSize="434,114" sap2010:WorkflowViewState.IdRef="Assign_48">
+            <Assign sap:VirtualizedContainerService.HintSize="479,114" sap2010:WorkflowViewState.IdRef="Assign_48">
               <Assign.To>
                 <OutArgument x:TypeArguments="x:String">[stNameSequence]</OutArgument>
               </Assign.To>
@@ -373,17 +374,56 @@
                 <InArgument x:TypeArguments="x:String">Ordem Exibe Pokemons</InArgument>
               </Assign.Value>
             </Assign>
-            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="434,173" sap2010:WorkflowViewState.IdRef="LogMessage_40" Level="Info" Message="[&quot;Iniciando a sequence - &quot; + stNameSequence]" />
-            <ui:SortDataTable ColumnName="{x:Null}" DataColumn="{x:Null}" DataTable="[dtPokemons]" DisplayName="Sort Data Table" sap:VirtualizedContainerService.HintSize="434,112" sap2010:WorkflowViewState.IdRef="SortDataTable_1" Order="Ascending" OutputDataTable="[dtPokemonsOrdenados]" SortOrder="Ascending">
-              <ui:SortDataTable.ColumnIndex>
-                <InArgument x:TypeArguments="s:Nullable(x:Int32)">
-                  <Literal x:TypeArguments="s:Nullable(x:Int32)" Value="2" />
-                </InArgument>
-              </ui:SortDataTable.ColumnIndex>
-            </ui:SortDataTable>
-            <ui:OutputDataTable DataTable="[dtPokemonsOrdenados]" DisplayName="Output Data Table as Text" sap:VirtualizedContainerService.HintSize="434,112" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" Text="[stPokemonsOrdenados]" />
-            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="434,117" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[stPokemonsOrdenados]" />
-            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="434,164" sap2010:WorkflowViewState.IdRef="LogMessage_46" Level="Info" Message="[&quot;Finalizamos a sequence - &quot; + stNameSequence]" />
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="479,173" sap2010:WorkflowViewState.IdRef="LogMessage_40" Level="Info" Message="[&quot;Iniciando a sequence - &quot; + stNameSequence]" />
+            <ui:MultipleAssign DisplayName="Multiple Assign" sap:VirtualizedContainerService.HintSize="479,179" sap2010:WorkflowViewState.IdRef="MultipleAssign_9">
+              <ui:MultipleAssign.AssignOperations>
+                <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_15">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="sd:DataTable">[dtPokemonsOrdenados]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="sd:DataTable">[dtPokemons.AsEnumerable.OrderBy(Function (r) r("Altura_Pokemon")).CopyToDataTable.DefaultView.ToTable(False, {"Nome_Pokemon", "Peso_Pokemon", "Altura_Pokemon"})]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                  <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_14">
+                    <ui:AssignOperation.To>
+                      <OutArgument x:TypeArguments="x:String">[stPokemonsOrdenados]</OutArgument>
+                    </ui:AssignOperation.To>
+                    <ui:AssignOperation.Value>
+                      <InArgument x:TypeArguments="x:String">[string.join(Environment.NewLine, dtPokemonsOrdenados.Rows.Cast(of DataRow).Select(function(row) string.join(",",row.ItemArray)))]</InArgument>
+                    </ui:AssignOperation.Value>
+                  </ui:AssignOperation>
+                </scg:List>
+              </ui:MultipleAssign.AssignOperations>
+            </ui:MultipleAssign>
+            <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="479,57" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+              <ui:CommentOut.Body>
+                <Sequence DisplayName="Atividades Ignoradas" sap:VirtualizedContainerService.HintSize="416,275" sap2010:WorkflowViewState.IdRef="Sequence_48">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <ui:SortDataTable ColumnName="{x:Null}" DataColumn="{x:Null}" DataTable="[dtPokemons]" DisplayName="Sort Data Table" sap:VirtualizedContainerService.HintSize="382,112" sap2010:WorkflowViewState.IdRef="SortDataTable_1" Order="Ascending" OutputDataTable="[dtPokemonsOrdenados]" SortOrder="Ascending">
+                    <ui:SortDataTable.ColumnIndex>
+                      <InArgument x:TypeArguments="s:Nullable(x:Int32)">
+                        <Literal x:TypeArguments="s:Nullable(x:Int32)" Value="2" />
+                      </InArgument>
+                    </ui:SortDataTable.ColumnIndex>
+                  </ui:SortDataTable>
+                  <ui:OutputDataTable DataTable="[dtPokemonsOrdenados]" DisplayName="Output Data Table as Text" sap:VirtualizedContainerService.HintSize="382,103" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" Text="[stPokemonsOrdenados]" />
+                </Sequence>
+              </ui:CommentOut.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:CommentOut>
+            <ui:MessageBox Caption="{x:Null}" ChosenButton="{x:Null}" AutoCloseAfter="00:00:00" DisplayName="Message Box" sap:VirtualizedContainerService.HintSize="479,117" sap2010:WorkflowViewState.IdRef="MessageBox_1" Text="[stPokemonsOrdenados]" />
+            <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="479,164" sap2010:WorkflowViewState.IdRef="LogMessage_46" Level="Info" Message="[&quot;Finalizamos a sequence - &quot; + stNameSequence]" />
           </Sequence>
         </FlowStep>
       </FlowStep.Next>
@@ -461,7 +501,7 @@
               <av:PointCollection x:Key="ConnectorLocation">300,225 300,255 170,255 170,275</av:PointCollection>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Sequence sap2010:Annotation.AnnotationText="Esta sequencia captura 20 URLs da API " DisplayName="Captura20pokemons" sap:VirtualizedContainerService.HintSize="603,1254" sap2010:WorkflowViewState.IdRef="Sequence_26">
+          <Sequence sap2010:Annotation.AnnotationText="Esta sequencia captura 20 URLs da API " DisplayName="Captura20pokemons" sap:VirtualizedContainerService.HintSize="110,70" sap2010:WorkflowViewState.IdRef="Sequence_26">
             <Sequence.Variables>
               <Variable x:TypeArguments="x:String" Name="stNameSequence" />
               <Variable x:TypeArguments="x:Int32" Name="iArquivos" />
